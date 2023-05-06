@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 
 from bongbu.models import Question
 from django.db.models import Q
-
+#zzz
 
 def index(request):
     page = request.GET.get('page', '1')  # 페이지
