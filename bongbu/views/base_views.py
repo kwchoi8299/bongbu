@@ -25,3 +25,6 @@ def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     context = {'question': question}
     return render(request, 'bongbu/question_detail.html', context)
+
+def page_not_found(request, exception):
+    return render(request, 'common/404.html', {})
