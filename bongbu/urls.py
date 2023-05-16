@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import base_views, question_views, answer_views
+from .views import base_views, question_views, answer_views, realty_news_views
 
 app_name = 'bongbu'
 
@@ -19,4 +19,8 @@ urlpatterns = [
 
     # answer_views.py
     path('answer/create/<int:question_id>/', answer_views.answer_create, name='answer_create'),
+
+    # realty_news_list.py
+    path('realty_news_list', realty_news_views.realty_news_list, name='realty_news_list'),
+
 ]
