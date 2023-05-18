@@ -1,5 +1,5 @@
 from django import forms
-from bongbu.models import Question, Answer
+from bongbu.models import Question, Answer, Realty_News_Comment
 
 
 class QuestionForm(forms.ModelForm):
@@ -21,4 +21,12 @@ class AnswerForm(forms.ModelForm):
         fields = ['content']
         labels = {
             'content': '답변내용',
+        }
+
+class Realty_News_Comment_Form(forms.ModelForm):
+    class Meta:
+        model = Realty_News_Comment
+        fields = ['content']
+        labels = {
+            'content': '댓글내용',
         }

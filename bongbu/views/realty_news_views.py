@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-
+from django.db.models import Q
 from ..forms import QuestionForm
 from ..models import Realty_News, Question
 
@@ -14,9 +14,9 @@ def realty_news_list(request):
     realty_news_list = Realty_News.objects.order_by('-create_date')
     if kw:
         realty_news_list = realty_news_list.filter(
-            Q(subject__icontains=kw) |  # 제목 검색
+            Q(title__icontains=kw) |  # 제목 검색
             Q(content__icontains=kw) |  # 내용 검색
-            Q(answer__content__icontains=kw) # 답변 내용 검색
+            Q(realty_news_comment__content__icontains=kw) # 댓글내용중에서 검색
         ).distinct()
 
     paginator = Paginator(realty_news_list, 10)  # 페이지당 10개씩 보여주기

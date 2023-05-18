@@ -15,3 +15,9 @@ class Realty_News(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     create_date = models.DateTimeField()
+
+class Realty_News_Comment(models.Model):
+    news = models.ForeignKey(Realty_News, on_delete=models.CASCADE)
+    content = models.TextField()
+    create_date = models.DateTimeField()
+

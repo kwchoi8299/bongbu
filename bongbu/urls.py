@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import base_views, question_views, answer_views, realty_news_views
+from .views import base_views, question_views, answer_views, realty_news_views, realty_news_comment_views
 
 app_name = 'bongbu'
 
@@ -22,5 +22,7 @@ urlpatterns = [
 
     # realty_news_list.py
     path('realty_news_list', realty_news_views.realty_news_list, name='realty_news_list'),
+    path('realty_news_list/<int:news_id>/', base_views.realty_news_detail, name='realty_news_detail'),
+    path('realty_news_comment/create/<int:news_id>/', realty_news_comment_views.comment_create, name='comment_create'),
 
 ]

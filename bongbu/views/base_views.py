@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
-from bongbu.models import Question
+from bongbu.models import Question, Realty_News
 from django.db.models import Q
 #zzz
 
@@ -25,6 +25,12 @@ def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     context = {'question': question}
     return render(request, 'bongbu/question_detail.html', context)
+
+#부동산 뉴스 상세
+def realty_news_detail(request, news_id):
+    news = get_object_or_404(Realty_News, pk=news_id)
+    context = {'news': news}
+    return render(request, 'bongbu/realty_news_detail.html', context)
 
 def page_not_found(request, exception):
     return render(request, 'common/404.html', {})
