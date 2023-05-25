@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from ..forms import AnswerForm
-from ..models import Question, Answer
+from ..models import Question
 
 def answer_create(request, question_id):
     question = get_object_or_404(Question, pk=question_id)

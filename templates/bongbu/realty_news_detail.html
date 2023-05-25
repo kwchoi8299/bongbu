@@ -5,7 +5,8 @@
     <h2 class="border-bottom py-2">{{ news.title }}</h2>
     <div class="card my-3">
         <div class="card-body">
-            <div class="card-text" style="white-space: pre-line;">{{ news.content }}</div>
+            <!-- <div class="card-text" style="white-space: pre-line;">{{ news.content }}</div> -->
+            <div class="card-text" style="white-space: pre-line;">{{ news.content|safe }}</div>
             <div class="d-flex justify-content-end">
                 <div class="badge bg-light text-dark p-2">
                     {{ news.create_date }}
@@ -13,8 +14,8 @@
             </div>
         </div>
     </div>
-    <!-- 답변 -->
-    <h5 class="border-bottom my-3 py-2">{{news.realty_news_comment_set.count}}개의 답변이 있습니다.</h5>
+    <!-- 댓글 -->
+    <h5 class="border-bottom my-3 py-2">{{news.realty_news_comment_set.count}}개의 댓글이 있습니다.</h5>
     {% for answer in news.realty_news_comment_set.all %}
     <div class="card my-3">
         <div class="card-body">
@@ -27,7 +28,7 @@
         </div>
     </div>
     {% endfor %}
-    <!-- 답변 등록 -->
+    <!-- 댓글 등록 -->
     <form action="{% url 'bongbu:comment_create' news.id %}" method="post" class="my-3">
         {% csrf_token %}
         <!-- 오류표시 Start -->
@@ -45,10 +46,10 @@
         {% endif %}
         <!-- 오류표시 End -->
         <div class="mb-3">
-            <label for="content" class="form-label">답변내용</label>
+            <label for="content" class="form-label">댓글내용</label>
             <textarea name="content" id="content" class="form-control" rows="10"></textarea>
         </div>
-        <input type="submit" value="답변등록" class="btn btn-primary">
+        <input type="submit" value="댓글등록" class="btn btn-primary">
     </form>
 </div>
 {% endblock %}
