@@ -7,6 +7,8 @@ import pymysql
 from requests.packages.urllib3.util.ssl_ import create_urllib3_context
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+import http.client
+
 
 # 경고 비활성화
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -25,12 +27,27 @@ class SSLAdapter(HTTPAdapter):
 url = "https://realestate.daum.net/news"
 # res = requests.get(url)
 
-s = requests.Session()
-s.mount('https://', SSLAdapter())
-res = s.get(url)
+# s = requests.Session()
+# s.mount('https://', SSLAdapter())
+# res = s.get(url)
+# res.raise_for_status()
 
-res.raise_for_status()
-soup = BeautifulSoup(res.text, "lxml") # beautifulsoup 객체로 만든것이다. 
+host = "realestate.daum.net"
+port = 443
+url_path = "/news"
+
+conn = http.client.HTTPSConnection(
+    host,
+    port,
+    context=None,  # 이를 제공하려면 ssl.create_default_context()를 사용할 수 있습니다.
+)
+conn.request("GET", url_path)
+
+response = conn.getresponse()
+html_data = response.read()
+
+soup = BeautifulSoup(html_data, 'html.parser')
+# soup = BeautifulSoup(res.text, "lxml") # beautifulsoup 객체로 만든것이다. 
 news_list = soup.find("div", attrs={"class":"section_allnews"}).find_all("li")
 
 # 타이틀과 링크 데이터 담기
