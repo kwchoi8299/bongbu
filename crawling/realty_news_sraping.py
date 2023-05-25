@@ -4,15 +4,30 @@ import requests
 from bs4 import BeautifulSoup
 # import a_auto_posting_tistory
 import pymysql
+from requests.packages.urllib3.util.ssl_ import create_urllib3_context
+from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 # 경고 비활성화
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
+class SSLAdapter(HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        context = create_urllib3_context()
+        kwargs['ssl_context'] = context
+        return super().init_poolmanager(*args, **kwargs)
+
+    def proxy_manager_for(self, *args, **kwargs):
+        context = create_urllib3_context()
+        kwargs['ssl_context'] = context
+        return super().proxy_manager_for(*args, **kwargs)
+
 url = "https://realestate.daum.net/news"
 # res = requests.get(url)
-# SSL 인증서 확인 비활성화
-res = requests.get(url, verify=False)
+
+s = requests.Session()
+s.mount('https://', SSLAdapter())
+res = s.get(url)
 
 res.raise_for_status()
 soup = BeautifulSoup(res.text, "lxml") # beautifulsoup 객체로 만든것이다. 
