@@ -10,7 +10,7 @@ import ssl
 
 
 url = "https://realestate.daum.net/news"
-res = requests.get(url)
+res = requests.get(url, verify=False)
 # res.raise_for_status()
 
 
