@@ -19,10 +19,10 @@ url_path = "/news"
 
 # 구식 재협상 및 덜 안전한 설정 허용
 ssl_context = ssl.create_default_context()
-ssl_context.options &= ~ssl.OP_NO_SSLv2 & ~ssl.OP_NO_SSLv3
-ssl_context.options &= ~ssl.OP_NO_TLSv1 & ~ssl.OP_NO_TLSv1_1
+ssl_context.options &= ~ssl.OP_NO_SSLv2 & ~ssl.OP_NO_SSLv3 & ~ssl.OP_NO_TLSv1 & ~ssl.OP_NO_TLSv1_1
 ssl_context.options &= ~ssl.OP_NO_COMPRESSION
 ssl_context.set_ciphers("DEFAULT@SECLEVEL=0")
+ssl_context.options |= ssl.OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION
 
 conn = http.client.HTTPSConnection(
     host,
@@ -30,6 +30,7 @@ conn = http.client.HTTPSConnection(
     context=ssl_context,  # 수정된 SSL 컨텍스트를 전달합니다.
 )
 conn.request("GET", url_path)
+
 
 response = conn.getresponse()
 html_data = response.read()
