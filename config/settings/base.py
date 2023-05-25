@@ -111,13 +111,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'ko-kr'
-
-TIME_ZONE = 'Asia/Seoul'
-
-USE_I18N = True
-
-USE_TZ = True
+LANGUAGE_CODE = 'ko-kr' #국가 설정
+TIME_ZONE = 'Asia/Seoul' #시간대 설정
+USE_I18N = True #국제화(Internationalization)
+USE_L10N = True #지역화(localization)
+USE_TZ = False #장고 시간대
 
 
 # Static files (CSS, JavaScript, Images)
