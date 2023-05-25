@@ -4,42 +4,29 @@ import requests
 from bs4 import BeautifulSoup
 # import a_auto_posting_tistory
 import pymysql
-from requests.packages.urllib3.util.ssl_ import create_urllib3_context
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import http.client
+import ssl
 
 
-# 경고 비활성화
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-class SSLAdapter(HTTPAdapter):
-    def init_poolmanager(self, *args, **kwargs):
-        context = create_urllib3_context()
-        kwargs['ssl_context'] = context
-        return super().init_poolmanager(*args, **kwargs)
-
-    def proxy_manager_for(self, *args, **kwargs):
-        context = create_urllib3_context()
-        kwargs['ssl_context'] = context
-        return super().proxy_manager_for(*args, **kwargs)
-
-url = "https://realestate.daum.net/news"
+# url = "https://realestate.daum.net/news"
 # res = requests.get(url)
-
-# s = requests.Session()
-# s.mount('https://', SSLAdapter())
-# res = s.get(url)
 # res.raise_for_status()
 
 host = "realestate.daum.net"
 port = 443
 url_path = "/news"
 
+# 구식 재협상 허용
+ssl_context = ssl.create_default_context()
+ssl_context.options &= ~ssl.OP_NO_SSLv2 & ~ssl.OP_NO_SSLv3
+ssl_context.options &= ~ssl.OP_NO_COMPRESSION
+ssl_context.set_ciphers("DEFAULT@SECLEVEL=0")
+
 conn = http.client.HTTPSConnection(
     host,
     port,
-    context=None,  # 이를 제공하려면 ssl.create_default_context()를 사용할 수 있습니다.
+    context=ssl_context,  # 수정된 SSL 컨텍스트를 전달합니다.
 )
 conn.request("GET", url_path)
 
