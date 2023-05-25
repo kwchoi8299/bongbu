@@ -4,9 +4,16 @@ import requests
 from bs4 import BeautifulSoup
 # import a_auto_posting_tistory
 import pymysql
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+# 경고 비활성화
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 url = "https://realestate.daum.net/news"
-res = requests.get(url)
+# res = requests.get(url)
+# SSL 인증서 확인 비활성화
+res = requests.get(url, verify=False)
+
 res.raise_for_status()
 soup = BeautifulSoup(res.text, "lxml") # beautifulsoup 객체로 만든것이다. 
 news_list = soup.find("div", attrs={"class":"section_allnews"}).find_all("li")
