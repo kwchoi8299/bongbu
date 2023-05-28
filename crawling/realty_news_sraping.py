@@ -4,36 +4,16 @@ import requests
 from bs4 import BeautifulSoup
 # import a_auto_posting_tistory
 import pymysql
-import ssl
-
-# Add the following lines at the top
-import urllib3
-urllib3.disable_warnings()
-http = urllib3.PoolManager()
-
-# Add this right after creating the http object
-ssl_context = ssl.create_default_context()
-ssl_context.options &= ~ssl.OP_NO_SSLv3
-http.ssl_context = ssl_context
 
 url = "https://realestate.daum.net/news"
-res = http.request('GET', url)
-
-res_status_code = res.status
-res_text = res.data.decode('utf-8')
-
-# res = requests.get(url)
-# res = requests.get(url, verify=False)
-# res.raise_for_status()
-if res_status_code == 200:
-    # soup = BeautifulSoup(res.text, "lxml") # beautifulsoup 객체로 만든것이다. 
-    soup = BeautifulSoup(res_text, "lxml")
-    news_list = soup.find("div", attrs={"class":"section_allnews"}).find_all("li")
-else:
-    print(f"Error: 연결에 실패했습니다. 상태 코드 {res_status_code}")
+res = requests.get(url)
+res.raise_for_status()
+soup = BeautifulSoup(res.text, "lxml") # beautifulsoup 객체로 만든것이다. 
+news_list = soup.find("div", attrs={"class":"section_allnews"}).find_all("li")
 
 # 타이틀과 링크 데이터 담기
 news_title_link_list = []
+
 
 #뉴스 출력
 def print_news(index, title, link):
