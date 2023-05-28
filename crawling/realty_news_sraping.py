@@ -4,12 +4,30 @@ import requests
 from bs4 import BeautifulSoup
 # import a_auto_posting_tistory
 import pymysql
+import http.client
 
-url = "https://realestate.daum.net/news"
-res = requests.get(url, verify=False)
-res.raise_for_status()
-soup = BeautifulSoup(res.text, "lxml") # beautifulsoup 객체로 만든것이다. 
-news_list = soup.find("div", attrs={"class":"section_allnews"}).find_all("li")
+# Connects to the server
+conn = http.client.HTTPSConnection("realestate.daum.net", timeout=10)
+conn.putrequest("GET", "/news")
+conn.putheader("User-Agent", "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)")
+conn.endheaders()
+
+# Gets the response
+response = conn.getresponse()
+if response.status == 200:
+    page_content = response.read().decode("utf-8")
+    soup = BeautifulSoup(page_content, "lxml")
+    news_list = soup.find("div", attrs={"class": "section_allnews"}).find_all("li")
+    # 진행하는 나머지 코드
+else:
+    print(f"Error: 연결에 실패했습니다. 상태 코드 {response.status}")
+conn.close()
+
+# url = "https://realestate.daum.net/news"
+# res = requests.get(url, verify=False)
+# res.raise_for_status()
+# soup = BeautifulSoup(res.text, "lxml") # beautifulsoup 객체로 만든것이다. 
+# news_list = soup.find("div", attrs={"class":"section_allnews"}).find_all("li")
 
 # 타이틀과 링크 데이터 담기
 news_title_link_list = []
