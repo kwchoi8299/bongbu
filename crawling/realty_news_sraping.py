@@ -4,12 +4,17 @@ import requests
 from bs4 import BeautifulSoup
 # import a_auto_posting_tistory
 import pymysql
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+import ssl
+
+# Add the following lines at the top
 import urllib3
 urllib3.disable_warnings()
 http = urllib3.PoolManager()
 
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+# Add this right after creating the http object
+ssl_context = ssl.create_default_context()
+ssl_context.options &= ~ssl.OP_NO_SSLv3
+http.ssl_context = ssl_context
 
 url = "https://realestate.daum.net/news"
 res = http.request('GET', url)
